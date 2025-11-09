@@ -89,6 +89,7 @@ fun AddNoteDialogBox(showAlertBoxViewModel : ShowAddNoteDialogViewModel, notesVi
                         }
                     }
                 }
+                AddNoteCustomInfo(newNoteInfoViewModel)
             }
         },
         properties = DialogProperties(
