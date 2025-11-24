@@ -34,6 +34,9 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
 
     val showStartDatePicker = remember { mutableStateOf(false) }
     val showEndDatePicker = remember { mutableStateOf(false) }
+    val isStartDateSelected = remember { mutableStateOf(false) }
+    val selectedStartDateInStringFormat = remember { mutableStateOf("") }
+    val selectedEndDateInStringFormat = remember { mutableStateOf("") }
 
     Column {
         OutlinedTextField(
@@ -55,14 +58,23 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
                     showStartDatePicker.value = true
                 }
             ) {
-                Text("Select Start Date")
+                if(selectedStartDateInStringFormat.value.isEmpty()) {
+                    Text("Select Start Date")
+                } else {
+                    Text(selectedStartDateInStringFormat.value)
+                }
             }
             TextButton(
                 onClick = {
                     showEndDatePicker.value = true
-                }
+                },
+                enabled = isStartDateSelected.value
             ) {
-                Text("Select End Date")
+                if(selectedEndDateInStringFormat.value.isEmpty()) {
+                    Text("Select End Date")
+                } else {
+                    Text(selectedEndDateInStringFormat.value)
+                }
             }
         }
     }
@@ -71,6 +83,10 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
         DatePickerModal(
             LocalContext.current,
             onDateSelectedRequest = {
+                newNoteInfoViewModel.setNoteStartDate(it)
+                isStartDateSelected.value = true
+                showStartDatePicker.value = false
+                selectedStartDateInStringFormat.value = DataValidator.getDateFromTimestamp(it!!)
             },
             onDatePickerDismissRequest = {
                 showStartDatePicker.value = false
@@ -80,10 +96,7 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
                 if(it == null) {
                     return@DatePickerModal false
                 }
-                if(it < System.currentTimeMillis()) {
-                    return@DatePickerModal false
-                }
-                return@DatePickerModal true
+                return@DatePickerModal DataValidator.isValidStartTime(it)
             }
         )
     }
@@ -92,6 +105,9 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
         DatePickerModal(
             LocalContext.current,
             onDateSelectedRequest = {
+                showEndDatePicker.value = false
+                selectedEndDateInStringFormat.value = DataValidator.getDateFromTimestamp(it!!)
+                newNoteInfoViewModel.setNoteEndDate(it)
             },
             onDatePickerDismissRequest = {
                 showEndDatePicker.value = false
@@ -101,7 +117,7 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
                 if(it == null) {
                     return@DatePickerModal false
                 }
-                val res: Boolean = DataValidator.isValidStartTime(selectedStartTime = it)
+                val res: Boolean = DataValidator.isValidEndTime(it, newNoteInfoViewModel.noteStartDate.value!!)
                 return@DatePickerModal res
             }
         )

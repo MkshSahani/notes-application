@@ -1,5 +1,7 @@
 package com.r2b.mynotes.composable
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
@@ -21,6 +23,7 @@ import com.r2b.mynotes.viewmodel.NewNoteInfoViewModel
 import com.r2b.mynotes.viewmodel.NotesViewModel
 import com.r2b.mynotes.viewmodel.ShowAddNoteDialogViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNoteDialogBox(showAlertBoxViewModel : ShowAddNoteDialogViewModel, notesViewModel: NotesViewModel) {
@@ -48,6 +51,7 @@ fun AddNoteDialogBox(showAlertBoxViewModel : ShowAddNoteDialogViewModel, notesVi
         },
         confirmButton = {
             TextButton(onClick = {
+
                 showAlertBoxViewModel.dismissAddNOteDialogBox()
             }) {
                 Text("Add")
