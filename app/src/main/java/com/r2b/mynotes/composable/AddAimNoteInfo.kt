@@ -37,13 +37,14 @@ fun AddAimNoteInfo(newNoteInfoViewModel: NewNoteInfoViewModel) {
     val isStartDateSelected = remember { mutableStateOf(false) }
     val selectedStartDateInStringFormat = remember { mutableStateOf("") }
     val selectedEndDateInStringFormat = remember { mutableStateOf("") }
+    val aimNoteDescription = remember { newNoteInfoViewModel.noteDescription }
 
     Column {
         OutlinedTextField(
             singleLine = false,
-            value = "",
+            value = newNoteInfoViewModel.noteDescription.value,
             onValueChange = {
-
+                newNoteInfoViewModel.setNoteDescription(it)
             },
             label = {
                 Text("Description")

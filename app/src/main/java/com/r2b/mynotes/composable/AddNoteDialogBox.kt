@@ -51,8 +51,7 @@ fun AddNoteDialogBox(showAlertBoxViewModel : ShowAddNoteDialogViewModel, notesVi
         },
         confirmButton = {
             TextButton(onClick = {
-
-                showAlertBoxViewModel.dismissAddNOteDialogBox()
+//                showAlertBoxViewModel.dismissAddNOteDialogBox()
             }) {
                 Text("Add")
             }
